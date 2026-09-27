@@ -1,0 +1,26 @@
+{
+  "listen": ":8080",
+  "forward_timeout": "2s",
+  "routes": [
+    { "prefix": "/users", "service": "user-service" },
+    { "prefix": "/orders", "service": "order-service" }
+  ],
+  "services": [
+    {
+      "name": "user-service",
+      "instances": ["127.0.0.1:19091", "127.0.0.1:19092", "127.0.0.1:19093"],
+      "rate_limit": { "rate": 5, "burst": 5 }
+    },
+    {
+      "name": "order-service",
+      "instances": ["127.0.0.1:20091", "127.0.0.1:20092"]
+    }
+  ],
+  "health_check": {
+    "path": "/healthz",
+    "interval": "1s",
+    "timeout": "300ms",
+    "healthy_threshold": 2,
+    "unhealthy_threshold": 3
+  }
+}
