@@ -1,0 +1,44 @@
+{
+  "listen": ":8080",
+  "defaults": {
+    "timeout_ms": 3000,
+    "rate_limit": { "requests_per_second": 0, "burst": 0 },
+    "health_check": {
+      "path": "/healthz",
+      "interval_ms": 2000,
+      "timeout_ms": 500,
+      "failure_threshold": 3,
+      "success_threshold": 2
+    }
+  },
+  "routes": [
+    {
+      "name": "users",
+      "prefix": "/users",
+      "backends": ["127.0.0.1:9001", "127.0.0.1:9002"],
+      "timeout_ms": 800,
+      "rate_limit": { "requests_per_second": 5, "burst": 5 },
+      "health_check": {
+        "path": "/healthz",
+        "interval_ms": 500,
+        "timeout_ms": 200,
+        "failure_threshold": 3,
+        "success_threshold": 2
+      }
+    },
+    {
+      "name": "orders",
+      "prefix": "/orders",
+      "backends": ["127.0.0.1:9101"],
+      "timeout_ms": 1000,
+      "rate_limit": { "requests_per_second": 2, "burst": 2 },
+      "health_check": {
+        "path": "/healthz",
+        "interval_ms": 500,
+        "timeout_ms": 200,
+        "failure_threshold": 3,
+        "success_threshold": 2
+      }
+    }
+  ]
+}
